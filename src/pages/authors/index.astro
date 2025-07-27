@@ -1,0 +1,47 @@
+---
+import { Fragment } from "react";
+import { sanityClient } from "sanity:client";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const allAuthors = await sanityClient.fetch(
+  `*[_type == "author" && defined(slug)] | order(name)`
+);
+
+let allAuthorsByFirstChar = {};
+for (const author of allAuthors) {
+  if (author.name[0] in allAuthorsByFirstChar) {
+    allAuthorsByFirstChar[author.name[0]].push(author);
+  } else {
+    allAuthorsByFirstChar[author.name[0]] = [author];
+  }
+}
+---
+
+<BaseLayout>
+  <div class="p-5 flex flex-col justify-center">
+    <h1>List of Authors</h1>
+    <div class="grid grid-cols-3 gap-4">
+      {
+        Object.entries(allAuthorsByFirstChar).map(([key, value]) => (
+          <div class="border-b-1 pb-7.5 border-slate-700">
+            <h3 class="font-extrabold">{key}</h3>
+            <ul>
+              {value.map((author) => (
+                <li>
+                  <a href={"/authors/" + author.slug.current}>{author.name}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <div class="flex justify-center py-5 mt-5">
+      <a
+        href="/"
+        class="m-0 border-1 px-2.5 py-1 w-40 text-center hover:bg-black hover:text-slate-50"
+        >Back to Home</a
+      >
+    </div>
+  </div>
+</BaseLayout>

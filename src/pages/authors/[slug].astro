@@ -1,0 +1,54 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import { loadQuery } from "../../lib/load-query";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const { data: allAuthors } = await loadQuery<SanityDocument[]>({
+    query: `*[_type == "author"]`,
+  });
+
+  return allAuthors.map(({ slug }) => {
+    return {
+      params: {
+        slug: slug.current,
+      },
+    };
+  });
+}
+
+const { params } = Astro;
+
+const { data: author } = await loadQuery({
+  query: `*[_type == "author" && slug.current == $slug][0]`,
+  params,
+});
+
+const { data: books } = await loadQuery({
+  query: `*[_type == "book" && (authors[0]._ref in *[_type == "author" && name == $author]._id) || (authors[1]._ref in *[_type == "author" && name == $author]._id)] | order(publishYear)`,
+  params: {
+    author: author.name,
+  },
+});
+---
+
+<BaseLayout>
+  <div class="sm:max-w-2xl lg:max-w-3xl mx-8 flex flex-col justify-center">
+    <h1>{author.name}</h1>
+    <ul>
+      <li><span>Nationality:</span> {author.nationality}</li>
+    </ul>
+
+    <h2 class="underline">Published Works</h2>
+    <ul class="grid grid-cols-2 gap-6">
+      {
+        books.map((book) => (
+          <li>
+            <a href={"/books/" + book.slug.current}>{book.name}</a>
+            <span>({book.publishYear})</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayout>

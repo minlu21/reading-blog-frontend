@@ -1,0 +1,37 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import { loadQuery } from "../../lib/load-query";
+import NoteLayout from "../layouts/NoteLayout.astro";
+
+export async function getStaticPaths() {
+  const { data: notes } = await loadQuery<SanityDocument[]>({
+    query: `*[_type == "notes"]`,
+  });
+
+  return notes.map(({ slug }) => {
+    return {
+      params: {
+        slug: slug.current,
+      },
+    };
+  });
+}
+
+const { params } = Astro;
+
+const { data: note } = await loadQuery({
+  query: `*[_type == "notes" && slug.current == $slug][0]`,
+  params,
+});
+---
+
+<NoteLayout title={note.name} content={note.content} />
+
+<!-- <BaseLayout>
+  <h1>{note.name}</h1>
+  <PortableText portableText={note.content} />
+</BaseLayout> -->
+
+<!-- <h2>Resources</h2>
+<h2>{note.resource[0].author}</h2>
+<h2>{note.resource[0].title}</h2> -->

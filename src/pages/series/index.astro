@@ -1,0 +1,48 @@
+---
+import { Fragment } from "react";
+import { sanityClient } from "sanity:client";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const allSeries = await sanityClient.fetch(
+  `*[_type == "series" && defined(slug)] | order(name)`
+);
+
+let allSeriesByFirstChar = {};
+for (const series of allSeries) {
+  if (series.name[0] in allSeriesByFirstChar) {
+    allSeriesByFirstChar[series.name[0]].push(series);
+  } else {
+    allSeriesByFirstChar[series.name[0]] = [series];
+  }
+}
+---
+
+<BaseLayout>
+  <div class="p-5 flex flex-col justify-center">
+    <h1>List of Series</h1>
+
+    <div class="grid grid-cols-3 gap-4">
+      {
+        Object.entries(allSeriesByFirstChar).map(([key, value]) => (
+          <div class="border-b-1 pb-7.5 border-slate-700">
+            <h3 class="font-extrabold">{key}</h3>
+            <ul>
+              {value.map((series) => (
+                <li>
+                  <a href={"/series/" + series.slug.current}>{series.name}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <div class="flex justify-center py-5 mt-5">
+      <a
+        href="/"
+        class="m-0 border-1 px-2.5 py-1 w-40 text-center hover:bg-black hover:text-slate-50"
+        >Back to Home</a
+      >
+    </div>
+  </div>
+</BaseLayout>

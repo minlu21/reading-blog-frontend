@@ -1,0 +1,25 @@
+---
+import PortableText from "../../components/PortableText.astro";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  content: string;
+}
+
+const { title, content } = Astro.props;
+---
+
+<BaseLayout>
+  <div class="sm:max-w-2xl lg:max-w-3xl mx-8 flex flex-col justify-center">
+    <h1 class="border-b-1">{title}</h1>
+    <PortableText portableText={content} />
+    <div class="flex justify-center py-5 mt-5">
+      <a
+        href="/notes"
+        class="m-0 border-1 px-2.5 py-1 w-40 text-center hover:bg-black hover:text-slate-50"
+        >Back to My Notes</a
+      >
+    </div>
+  </div>
+</BaseLayout>

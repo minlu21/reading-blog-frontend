@@ -1,0 +1,33 @@
+---
+import { Fragment } from "react";
+import { sanityClient } from "sanity:client";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const allNotes = await sanityClient.fetch(
+  `*[_type == "notes" && defined(slug)]`
+);
+---
+
+<BaseLayout>
+  <div class="p-5 flex flex-col justify-center">
+    <h1>Misc. Notes</h1>
+    <ul class="grid grid-cols-1 gap-4">
+      {
+        allNotes.map((note) => (
+          <li>
+            <a href={"/notes/" + note.slug.current}>{note.name}</a> (Last
+            Updated:
+            {new Date(note._updatedAt).toDateString()})
+          </li>
+        ))
+      }
+    </ul>
+    <div class="flex justify-center py-5 mt-5">
+      <a
+        href="/"
+        class="m-0 border-1 px-2.5 py-1 w-40 text-center hover:bg-black hover:text-slate-50"
+        >Back to Home</a
+      >
+    </div>
+  </div>
+</BaseLayout>

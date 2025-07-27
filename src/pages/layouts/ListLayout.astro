@@ -1,0 +1,25 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<BaseLayout>
+  <div class="p-5 flex flex-col justify-center">
+    <h1>{title}</h1>
+    <ul>
+      <slot />
+    </ul>
+    <div class="flex justify-center py-5 mt-5">
+      <a
+        href="/"
+        class="m-0 border-1 px-2.5 py-1 w-40 text-center hover:bg-black hover:text-slate-50"
+        >Back to Home</a
+      >
+    </div>
+  </div>
+</BaseLayout>
