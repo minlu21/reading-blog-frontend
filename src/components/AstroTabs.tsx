@@ -33,7 +33,7 @@ export default function AstroTabs({ title, tabNames, tabContent }) {
   }
 
   return (
-    <Tabs defaultValue={title} className="m:min-w-2xl lg:min-w-3xl">
+    <Tabs defaultValue={title} className="w-full sm:w-2xl lg:w-3xl">
       <TabsList>
         {tabNames.map((tab, idx) => (
           <TabsTrigger key={idx} value={tab}>

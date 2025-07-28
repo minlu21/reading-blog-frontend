@@ -57,7 +57,7 @@ let tabContent = [fiction, nonfiction, drama, poetry, prose];
 ---
 
 <BaseLayout>
-  <div class="p-5 flex flex-col justify-center m:max-w-2xl lg:max-w-3xl mx-8">
+  <div class="p-5 flex flex-col justify-center">
     <h1>Library</h1>
 
     <AstroTabs
@@ -67,16 +67,6 @@ let tabContent = [fiction, nonfiction, drama, poetry, prose];
       tabContent={tabContent}
     />
 
-    <!-- <ul>
-      {
-        allBooks.map((book) => (
-          <li>
-            <a href={"/books/" + book.slug.current}>{book.name}</a>{" "}
-            <span>({book.publishYear})</span>
-          </li>
-        ))
-      }
-    </ul> -->
     <div class="flex justify-center py-5 mt-5">
       <a
         href="/"
