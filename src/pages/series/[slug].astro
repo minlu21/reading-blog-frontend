@@ -1,4 +1,5 @@
 ---
+import BookList from "@/components/BookList";
 import type { SanityDocument } from "@sanity/client";
 import { loadQuery } from "../../lib/load-query";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -28,7 +29,7 @@ const { data: series } = await loadQuery({
 });
 
 const { data: books } = await loadQuery({
-  query: `*[_type == "book" && series._ref in *[_type == "series" && name == $series]._id] | order(publishYear)`,
+  query: `*[_type == "book" && series._ref in *[_type == "series" && name == $series]._id] | order(publishYear) {..., authors[]->}`,
   params: {
     series: series.name,
   },
@@ -47,28 +48,6 @@ const { data: books } = await loadQuery({
       </li>
     </ul>
     <h2 class="underline">Books in the Series</h2>
-    <ul id="bookList" class="grid grid-cols-2 gap-6">
-      {
-        books.map((book) => (
-          <li>
-            <a
-              href={"/books/" + book.slug.current}
-              class={
-                book.status === "Completed"
-                  ? "text-green-700 line-through"
-                  : book.status === "In Progress"
-                    ? "text-slate-900 underline font-bold"
-                    : book.status === "Abandoned"
-                      ? "text-red-700 line-through"
-                      : "text-slate-600"
-              }
-            >
-              {book.name}
-            </a>{" "}
-            <span>({book.publishYear})</span>
-          </li>
-        ))
-      }
-    </ul>
+    <BookList client:load bookList={books} />
   </div>
 </BaseLayout>

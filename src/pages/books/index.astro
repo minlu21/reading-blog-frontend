@@ -8,43 +8,63 @@ const allBooks = await sanityClient.fetch(
 );
 
 const fictionBC = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Fiction" && bc] | order(publishYear desc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Fiction" && bc] | order(publishYear desc) {
+  ..., authors[]->
+  }`
 );
 
 const fictionAD = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Fiction" && (!bc || !defined(bc))] | order(publishYear asc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Fiction" && (!bc || !defined(bc))] | order(publishYear asc) {
+  ..., authors[]->
+  }`
 );
 
 const nonfictionBC = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Nonfiction" && bc] | order(publishYear desc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Nonfiction" && bc] | order(publishYear desc) {
+  ..., authors[]->
+  }`
 );
 
 const nonfictionAD = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Nonfiction" && (!bc || !defined(bc))] | order(publishYear asc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Nonfiction" && (!bc || !defined(bc))] | order(publishYear asc) {
+  ..., authors[]->
+  }`
 );
 
 const dramaBC = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Drama" && bc] | order(publishYear desc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Drama" && bc] | order(publishYear desc) {
+  ..., authors[]->
+  }`
 );
 
 const dramaAD = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Drama" && (!bc || !defined(bc))] | order(publishYear asc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Drama" && (!bc || !defined(bc))] | order(publishYear asc) {
+  ..., authors[]->
+  }`
 );
 
 const poetryBC = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Poetry" && bc] | order(publishYear desc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Poetry" && bc] | order(publishYear desc) {
+  ..., authors[]->
+  }`
 );
 
 const poetryAD = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Poetry" && (!bc || !defined(bc))] | order(publishYear asc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Poetry" && (!bc || !defined(bc))] | order(publishYear asc) {
+  ..., authors[]->
+  }`
 );
 
 const proseBC = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Prose" && bc] | order(publishYear desc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Prose" && bc] | order(publishYear desc) {
+  ..., authors[]->
+  }`
 );
 
 const proseAD = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Prose" && (!bc || !defined(bc))] | order(publishYear asc)`
+  `*[_type == "book" && defined(slug) && literaryGenre == "Prose" && (!bc || !defined(bc))] | order(publishYear asc) {
+  ..., authors[]->
+  }`
 );
 
 const fiction = fictionBC.concat(fictionAD);
