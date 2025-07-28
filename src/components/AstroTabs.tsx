@@ -4,7 +4,7 @@ export default function AstroTabs({ title, tabNames, tabContent }) {
   function extractBooks(tabContent) {
     if (tabContent) {
       return (
-        <ul className="grid grid-cols-2 gap-6">
+        <ul id="bookList" className="grid grid-cols-2 gap-6">
           {tabContent.map((tab, idx) => (
             <li key={idx}>
               <a
@@ -13,7 +13,7 @@ export default function AstroTabs({ title, tabNames, tabContent }) {
                   tab.status === "Completed"
                     ? "text-green-700 line-through"
                     : tab.status === "In Progress"
-                    ? "text-slate-900 underline"
+                    ? "text-slate-900 underline font-bold"
                     : tab.status === "Abandoned"
                     ? "text-red-700 line-through"
                     : "text-slate-600"

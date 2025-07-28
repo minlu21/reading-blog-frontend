@@ -40,11 +40,24 @@ const { data: books } = await loadQuery({
     </ul>
 
     <h2 class="underline">Published Works</h2>
-    <ul class="grid grid-cols-2 gap-6">
+    <ul id="bookList" class="grid grid-cols-2 gap-6">
       {
         books.map((book) => (
           <li>
-            <a href={"/books/" + book.slug.current}>{book.name}</a>
+            <a
+              href={"/books/" + book.slug.current}
+              class={
+                book.status === "Completed"
+                  ? "text-green-700 line-through"
+                  : book.status === "In Progress"
+                    ? "text-slate-900 underline font-bold"
+                    : book.status === "Abandoned"
+                      ? "text-red-700 line-through"
+                      : "text-slate-600"
+              }
+            >
+              {book.name}
+            </a>
             <span>({book.publishYear})</span>
           </li>
         ))

@@ -48,6 +48,10 @@
         color: var(--color-slate-50);
     }
 
+    #bookList a:hover {
+        letter-spacing: 0.025rem;
+    }
+
     a {
         /* font-size: var(--text-base); */
         /* color: var(--color-blue-600); */
