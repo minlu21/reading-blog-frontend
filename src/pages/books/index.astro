@@ -3,10 +3,6 @@ import AstroTabs from "@/components/AstroTabs";
 import { sanityClient } from "sanity:client";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const allBooks = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug)] | order(publishYear)`
-);
-
 const fictionBC = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Fiction" && bc] | order(publishYear desc) {
   ..., authors[]->
@@ -55,25 +51,12 @@ const poetryAD = await sanityClient.fetch(
   }`
 );
 
-const proseBC = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Prose" && bc] | order(publishYear desc) {
-  ..., authors[]->
-  }`
-);
-
-const proseAD = await sanityClient.fetch(
-  `*[_type == "book" && defined(slug) && literaryGenre == "Prose" && (!bc || !defined(bc))] | order(publishYear asc) {
-  ..., authors[]->
-  }`
-);
-
 const fiction = fictionBC.concat(fictionAD);
 const nonfiction = nonfictionBC.concat(nonfictionAD);
 const drama = dramaBC.concat(dramaAD);
 const poetry = poetryBC.concat(poetryAD);
-const prose = proseBC.concat(proseAD);
 
-let tabContent = [fiction, nonfiction, drama, poetry, prose];
+let tabContent = [fiction, nonfiction, drama, poetry];
 ---
 
 <BaseLayout>
@@ -83,7 +66,7 @@ let tabContent = [fiction, nonfiction, drama, poetry, prose];
     <AstroTabs
       client:load
       title="Fiction"
-      tabNames={["Fiction", "Non-Fiction", "Drama", "Poetry", "Prose"]}
+      tabNames={["Fiction", "Non-Fiction", "Drama", "Poetry"]}
       tabContent={tabContent}
     />
 

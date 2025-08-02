@@ -80,6 +80,15 @@
     }
   }
 
+#tag {
+    font-family: "Roboto Mono", monospace;
+    font-size: small;
+    font-weight: normal;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 5rem;
+}
+
 .portableText {
     font-family: "Roboto Mono", monospace;
     font-size: small;        

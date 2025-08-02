@@ -19,8 +19,6 @@ export async function getStaticPaths() {
 
 const { params } = Astro;
 
-console.log(params);
-
 const { data: book } = await loadQuery({
   query: `*[_type == "book" && slug.current == $slug][0]{
     name, 
@@ -45,7 +43,7 @@ const { data: book } = await loadQuery({
   <h1>{book.name}</h1>
   <ul>
     <li>
-      <span>Author: </span>
+      <span>Author:&nbsp;&nbsp;</span>
       {
         book.authors !== null
           ? book.authors.map((author) => (
@@ -58,7 +56,7 @@ const { data: book } = await loadQuery({
       book.series !== null ? (
         <li>
           <>
-            <span>Series: </span>
+            <span>Series:&nbsp;&nbsp;</span>
             <a href={"/series/" + book.series.slug.current}>
               {book.series.name}
             </a>
@@ -66,6 +64,44 @@ const { data: book } = await loadQuery({
         </li>
       ) : (
         <div />
+      )
+    }
+    <li>
+      <span>Genre:&nbsp;&nbsp;</span>
+      {book.literaryGenre}
+      {
+        book.poetrySubgenre !== null
+          ? `| ${book.poetrySubgenre}`
+          : book.fictionSubgenre !== null
+            ? `| ${book.fictionSubgenre}`
+            : book.nonfictionSubgenre !== null
+              ? `| ${book.nonfictionSubgenre}`
+              : book.dramaSubgenre !== null
+                ? `| ${book.dramaSubgenre}`
+                : ""
+      }
+    </li>
+    <li>
+      <span>Status:&nbsp;&nbsp;</span>
+      <span
+        id="tag"
+        class={book.status === "Completed"
+          ? "bg-green-300 border-green-700 text-slate-900"
+          : book.status === "In Progress"
+            ? "bg-orange-300 border-orange-300 text-slate-900"
+            : book.status === "Abandoned"
+              ? "bg-red-300 border-red-300 text-slate-900"
+              : "text-slate-600"}>{book.status}</span
+      >
+    </li>
+    {
+      book.rating !== null ? (
+        <li>
+          <span>Rating:&nbsp;&nbsp;</span>
+          {book.rating}
+        </li>
+      ) : (
+        ""
       )
     }
   </ul>
