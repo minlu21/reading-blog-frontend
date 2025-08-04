@@ -1,5 +1,18 @@
 ---
+import BookList from "@/components/BookList";
+import { sanityClient } from "sanity:client";
 import BaseLayout from "./layouts/BaseLayout.astro";
+
+const currentlyReading = await sanityClient.fetch(
+  `*[_type == "book" && defined(slug) && status == "In Progress"] | order(publishYear asc) {
+  ..., authors[]->
+  }`
+);
 ---
 
-<BaseLayout />
+<BaseLayout>
+  <div class="p-5 flex flex-col justify-center">
+    <h1>Currently Reading</h1>
+    <BookList client:load bookList={currentlyReading} />
+  </div>
+</BaseLayout>
