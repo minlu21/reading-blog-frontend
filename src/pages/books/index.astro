@@ -3,58 +3,58 @@ import AstroTabs from "@/components/AstroTabs";
 import { sanityClient } from "sanity:client";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const fictionBC = await sanityClient.fetch(
+let fictionBC = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Fiction" && bc] | order(publishYear desc) {
   ..., authors[]->
   }`
 );
 
-const fictionAD = await sanityClient.fetch(
+let fictionAD = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Fiction" && (!bc || !defined(bc))] | order(publishYear asc) {
   ..., authors[]->
   }`
 );
 
-const nonfictionBC = await sanityClient.fetch(
+let nonfictionBC = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Nonfiction" && bc] | order(publishYear desc) {
   ..., authors[]->
   }`
 );
 
-const nonfictionAD = await sanityClient.fetch(
+let nonfictionAD = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Nonfiction" && (!bc || !defined(bc))] | order(publishYear asc) {
   ..., authors[]->
   }`
 );
 
-const dramaBC = await sanityClient.fetch(
+let dramaBC = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Drama" && bc] | order(publishYear desc) {
   ..., authors[]->
   }`
 );
 
-const dramaAD = await sanityClient.fetch(
+let dramaAD = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Drama" && (!bc || !defined(bc))] | order(publishYear asc) {
   ..., authors[]->
   }`
 );
 
-const poetryBC = await sanityClient.fetch(
+let poetryBC = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Poetry" && bc] | order(publishYear desc) {
   ..., authors[]->
   }`
 );
 
-const poetryAD = await sanityClient.fetch(
+let poetryAD = await sanityClient.fetch(
   `*[_type == "book" && defined(slug) && literaryGenre == "Poetry" && (!bc || !defined(bc))] | order(publishYear asc) {
   ..., authors[]->
   }`
 );
 
-const fiction = fictionBC.concat(fictionAD);
-const nonfiction = nonfictionBC.concat(nonfictionAD);
-const drama = dramaBC.concat(dramaAD);
-const poetry = poetryBC.concat(poetryAD);
+let fiction = fictionBC.concat(fictionAD);
+let nonfiction = nonfictionBC.concat(nonfictionAD);
+let drama = dramaBC.concat(dramaAD);
+let poetry = poetryBC.concat(poetryAD);
 
 let tabContent = [fiction, nonfiction, drama, poetry];
 ---
