@@ -1,5 +1,6 @@
 ---
 import type { SanityDocument } from "@sanity/client";
+import { PortableText as PortableTextInternal } from "astro-portabletext";
 import { loadQuery } from "../../lib/load-query";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -21,20 +22,13 @@ const { params } = Astro;
 
 const { data: book } = await loadQuery({
   query: `*[_type == "book" && slug.current == $slug][0]{
-    name, 
+    ...,
     authors[]->,
-    status,
-    rating,
     series->,
-    literaryGenre,
-    poetrySubgenre,
-    fictionSubgenre,
-    nonfictionSubgenre,
-    dramaSubgenre,
-    publishMonth,
-    publishYear,
-    bc,
-    notes}`,
+    notes[] {
+      ...
+    }
+    }`,
   params,
 });
 ---
@@ -105,4 +99,29 @@ const { data: book } = await loadQuery({
       )
     }
   </ul>
+
+  {
+    book.notes !== null
+      ? book.notes.map((note) => (
+          <div class="portableText">
+            <h2>{note.title}</h2>
+            {note.briefSummary !== null ? (
+              <PortableTextInternal value={note.briefSummary} />
+            ) : (
+              ""
+            )}
+            {note.details !== null ? (
+              <PortableTextInternal value={note.details} />
+            ) : (
+              ""
+            )}
+            {note.notes !== null ? (
+              <PortableTextInternal value={note.notes} />
+            ) : (
+              ""
+            )}
+          </div>
+        ))
+      : ""
+  }
 </BaseLayout>
